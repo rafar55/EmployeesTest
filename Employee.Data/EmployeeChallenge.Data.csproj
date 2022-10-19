@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SqlScripts\Script0001-CreateEmployeeTable.sql" />
     <None Remove="SqlScripts\Script0002-SeedEmployeeTable.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="SqlScripts\Script0001-CreateEmployeeTable.sql" />
     <EmbeddedResource Include="SqlScripts\Script0002-SeedEmployeeTable.sql" />
   </ItemGroup>
 
