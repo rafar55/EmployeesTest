@@ -1,4 +1,5 @@
 ﻿using EmployeeChallenge.Application.Common;
+using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -7,14 +8,23 @@ public class UnitOfWorkDapper : IUnitOfWork, IDisposable
 {
     private IDbConnection _cnn;
     private IDbTransaction? _tx;
+    private readonly IServiceProvider _serviceProvider;
 
-    public UnitOfWorkDapper(string connectionString)
+    public UnitOfWorkDapper(string connectionString, IServiceProvider serviceProvider)
     {
         _cnn = new SqlConnection(connectionString);
+        _serviceProvider = serviceProvider;
     }
 
     public IDbConnection Connection => _cnn;
     public IDbTransaction? Transaction => _tx;
+
+
+    public TRepository GetRepository<TRepository>()
+        where TRepository : class
+    {
+        return _serviceProvider.GetRequiredService<TRepository>();
+    }
 
     public void BeginTransaction() => _tx ??= _cnn.BeginTransaction();
     

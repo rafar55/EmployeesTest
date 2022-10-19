@@ -41,4 +41,10 @@ public class EmployeeRepository: IEmployeeRepository
 		var sql = @"Select * FROM Employees WHERE Id = @employeeId";
 		return await _db.Connection.QuerySingleOrDefaultAsync<Employee>(sql, new {employeeId}, _db.Transaction);
 	}
+
+    public async Task<IEnumerable<Employee>> GetEmployeesAsync()
+    {
+        var sql = @"Select * FROM Employees";
+        return await _db.Connection.QueryAsync<Employee>(sql, transaction: _db.Transaction);
+    }
 }

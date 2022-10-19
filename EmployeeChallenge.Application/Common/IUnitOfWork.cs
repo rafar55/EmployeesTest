@@ -7,5 +7,6 @@ public interface IUnitOfWork
     IDbTransaction? Transaction { get; }
 
     void BeginTransaction();
+    TRepository GetRepository<TRepository>() where TRepository : class;
     void RollbackTransaction();
 }
