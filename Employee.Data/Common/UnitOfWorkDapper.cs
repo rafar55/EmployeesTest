@@ -1,4 +1,5 @@
 ﻿using EmployeeChallenge.Application.Common;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,9 +11,9 @@ public class UnitOfWorkDapper : IUnitOfWork, IDisposable
     private IDbTransaction? _tx;
     private readonly IServiceProvider _serviceProvider;
 
-    public UnitOfWorkDapper(string connectionString, IServiceProvider serviceProvider)
+    public UnitOfWorkDapper(IConfiguration configuration, IServiceProvider serviceProvider)
     {
-        _cnn = new SqlConnection(connectionString);
+        _cnn = new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
         _serviceProvider = serviceProvider;
     }
 

@@ -3,5 +3,5 @@
 namespace EmployeeChallenge.Application.Employees.Services;
 public interface IEmployeeService
 {
-    Task<IEnumerable<Employee>> GetEmployeesAsync();
+    Task<IEnumerable<Employee>> GetEmployeesAsync(string? searchParam = null);
 }

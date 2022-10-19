@@ -1,0 +1,82 @@
+﻿@page "/"
+@page "/employees-list"
+@using EmployeeChallenge.Application.Employees.Services
+@using EmployeeChallenge.Core.Models
+
+<PageTitle>Employee List</PageTitle>
+
+@inject IEmployeeService EmployeeService
+
+
+<h1>Employee List</h1>
+
+<p>Here is the list of Employees in the application</p>
+
+@if (Loading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <div>
+        <input type="text" placeholder="Search" @oninput="OnInput" class="form-control" />
+    </div>
+    @if (employees.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Hire Date</th>
+                    <th>Phone Number</th>
+                    <th>Employee Zip</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in employees)
+                {
+                    <tr>
+                        <td>@employee.Id</td>
+                        <td>@employee.FirstName</td>
+                        <td>@employee.LastName</td>
+                        <td>@employee.HireDate.ToString("dd/MM/yyyy")</td>
+                        <td>@employee.Phone</td>
+                        <td>@employee.ZipCode</td>
+                        <td>@employee.CreatedAt</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }else
+    {
+         <p><em>No Results Found</em></p>
+    }
+
+}
+
+@code {
+    private Employee[] employees = Array.Empty<Employee>();
+    private bool Loading = true;
+    private string? SearchText = string.Empty;
+
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        SearchText = ((string?)e.Value) ?? string.Empty;
+        await LoadEmployees();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEmployees();
+        Loading = false;
+    }
+
+    private async Task LoadEmployees()
+    {
+        employees = (await EmployeeService.GetEmployeesAsync(SearchText)).ToArray();
+    }
+}

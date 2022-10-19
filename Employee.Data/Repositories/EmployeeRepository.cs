@@ -42,9 +42,10 @@ public class EmployeeRepository: IEmployeeRepository
 		return await _db.Connection.QuerySingleOrDefaultAsync<Employee>(sql, new {employeeId}, _db.Transaction);
 	}
 
-    public async Task<IEnumerable<Employee>> GetEmployeesAsync()
+    public async Task<IEnumerable<Employee>> GetEmployeesAsync(string searchParam)
     {
-        var sql = @"Select * FROM Employees";
-        return await _db.Connection.QueryAsync<Employee>(sql, transaction: _db.Transaction);
+        var sql = @"Select * FROM Employees 
+					WHERE (FirstName + ' ' + LastName) LIKE  CONCAT('%',@searchParam,'%')";
+        return await _db.Connection.QueryAsync<Employee>(sql, new {searchParam}, transaction: _db.Transaction);
     }
 }
