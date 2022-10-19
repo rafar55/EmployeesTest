@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using EmployeeChallenge.Application.Common;
-using EmployeeChallenge.Application.Repositories;
+using EmployeeChallenge.Application.Employees.Repositories;
 using EmployeeChallenge.Core.Models;
 
 namespace EmployeeChallenge.Data.Repositories;

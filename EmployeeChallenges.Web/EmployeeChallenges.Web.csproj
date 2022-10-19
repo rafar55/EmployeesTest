@@ -7,14 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Employee.Data\EmployeeChallenge.Data.csproj" />
     <ProjectReference Include="..\EmployeeChallenge.Application\EmployeeChallenge.Application.csproj" />
     <ProjectReference Include="..\EmployeeChallenge.Core\EmployeeChallenge.Core.csproj" />
