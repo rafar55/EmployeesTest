@@ -14,6 +14,7 @@ public class UnitOfWorkDapper : IUnitOfWork, IDisposable
     }
 
     public IDbConnection Connection => _cnn;
+    public IDbTransaction? Transaction => _tx;
 
     public void BeginTransaction() => _tx ??= _cnn.BeginTransaction();
     

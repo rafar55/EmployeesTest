@@ -12,5 +12,6 @@ public class Employee
     public string FirstName { get; set; }
     public string Phone { get; set; }
     public string ZipCode { get; set; }
-    public DateTimeOffset HireDate { get; set; }   
+    public DateOnly HireDate { get; set; }
+    public DateTimeOffset CreatedDate { get; set; }
 }
