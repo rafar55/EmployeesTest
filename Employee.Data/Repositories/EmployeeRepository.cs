@@ -42,10 +42,17 @@ public class EmployeeRepository: IEmployeeRepository
 		return await _db.Connection.QuerySingleOrDefaultAsync<Employee>(sql, new {employeeId}, _db.Transaction);
 	}
 
-    public async Task<IEnumerable<Employee>> GetEmployeesAsync(string searchParam)
+    public async Task<IEnumerable<Employee>> GetEmployeesAsync(string searchParam, string sortColumn, bool ascending = true)
     {
-        var sql = @"Select * FROM Employees 
-					WHERE (FirstName + ' ' + LastName) LIKE  CONCAT('%',@searchParam,'%')";
-        return await _db.Connection.QueryAsync<Employee>(sql, new {searchParam}, transaction: _db.Transaction);
+		var accendingStr = ascending ? "Asc" : "Desc" ;
+		var sql = @$"Select * FROM Employees 
+					WHERE ((FirstName + ' ' + LastName) LIKE  CONCAT('%',@searchParam,'%') OR Phone LIKE CONCAT('%',@searchParam,'%'))
+					ORDER BY CASE			
+								WHEN @sortColumn = 'CreatedAt' THEN CONVERT(varchar(50), HireDate)
+								WHEN @sortColumn = 'HireDate' THEN CONVERT(varchar(50), HireDate)
+								ELSE (FirstName + ' ' + LastName)
+							 END {accendingStr}";
+        
+		return await _db.Connection.QueryAsync<Employee>(sql, new {searchParam, sortColumn}, transaction: _db.Transaction);
     }
 }

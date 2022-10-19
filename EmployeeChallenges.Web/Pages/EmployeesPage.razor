@@ -1,12 +1,8 @@
 ﻿@page "/"
-@page "/employees-list"
 @using EmployeeChallenge.Application.Employees.Services
 @using EmployeeChallenge.Core.Models
 
 <PageTitle>Employee List</PageTitle>
-
-@inject IEmployeeService EmployeeService
-
 
 <h1>Employee List</h1>
 
@@ -18,9 +14,26 @@
 }
 else
 {
+    <div class="filters-container">
+        <div class="search-options">
+            <div>
+                <i class="oi oi-magnifying-glass"></i>
+                <input type="text" placeholder="Search" @oninput="OnInput" class="form-control" />
+            </div>
+            <div>
+                <select class="form-control" @onchange="OnOrderBySelected">
+                    <option value="1">Name Asc</option>
+                    <option value="2">Name Desc</option>
+                    <option value="3">Hire Date Asc</option>
+                    <option value="4">Hire Date Desc</option>
+                    <option value="5">Created At Asc</option>
+                    <option value="6">Created At Desc</option>
+                </select>
+                <i class="oi oi-sort-ascending"></i>
+            </div>
+        </div>
 
-    <div>
-        <input type="text" placeholder="Search" @oninput="OnInput" class="form-control" />
+        <button class="btn btn-primary">Add Employee</button>
     </div>
     @if (employees.Any())
     {
@@ -43,40 +56,17 @@ else
                         <td>@employee.Id</td>
                         <td>@employee.FirstName</td>
                         <td>@employee.LastName</td>
-                        <td>@employee.HireDate.ToString("dd/MM/yyyy")</td>
-                        <td>@employee.Phone</td>
+                        <td>@employee.HireDate.ToString("MM/dd/yyyy")</td>
+                        <td>@employee.Phone.FormatPhoneNumber()</td>
                         <td>@employee.ZipCode</td>
-                        <td>@employee.CreatedAt</td>
+                        <td>@employee.CreatedAt.ToString("MM/dd/yyyy hh:mm:ss")</td>
                     </tr>
                 }
             </tbody>
         </table>
-    }else
-    {
-         <p><em>No Results Found</em></p>
     }
-
-}
-
-@code {
-    private Employee[] employees = Array.Empty<Employee>();
-    private bool Loading = true;
-    private string? SearchText = string.Empty;
-
-    private async Task OnInput(ChangeEventArgs e)
+    else
     {
-        SearchText = ((string?)e.Value) ?? string.Empty;
-        await LoadEmployees();
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadEmployees();
-        Loading = false;
-    }
-
-    private async Task LoadEmployees()
-    {
-        employees = (await EmployeeService.GetEmployeesAsync(SearchText)).ToArray();
+        <p><em>No Results Found</em></p>
     }
 }

@@ -1,0 +1,25 @@
+﻿.filters-container {
+    display: flex;
+    justify-content: space-between
+}
+
+    .filters-container .search-options{
+        display: flex;
+    }
+
+    .filters-container .search-options div{
+        display: flex;
+        align-items: center;
+        position:relative;
+    }
+
+        .filters-container .search-options div i {           
+            min-width: 40px;
+            padding:10px;
+            position: absolute;            
+        }
+
+        .filters-container .search-options div input, .filters-container .search-options div select {
+            padding-left: 40px;
+            margin-right:10px;
+        }

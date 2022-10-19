@@ -12,9 +12,9 @@ public class EmployeeService : IEmployeeService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<Employee>> GetEmployeesAsync(string? searchParam)
+    public async Task<IEnumerable<Employee>> GetEmployeesAsync(string searchParam, string sortColumn, bool ascending = true)
     {
         var repository = _unitOfWork.GetRepository<IEmployeeRepository>();
-        return await repository.GetEmployeesAsync(searchParam ?? string.Empty);
+        return await repository.GetEmployeesAsync(searchParam, sortColumn, ascending);
     }    
 }
