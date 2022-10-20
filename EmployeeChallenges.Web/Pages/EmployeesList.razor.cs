@@ -1,11 +1,16 @@
 using Microsoft.AspNetCore.Components;
 using EmployeeChallenge.Core.Models;
 using EmployeeChallenge.Application.Employees.Services;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace EmployeeChallenges.Web.Pages;
 
 public partial class EmployeesList
 {
+    //for search debounce
+    private Timer _timer;
+
     [Inject]
     private IEmployeeService EmployeeService { get; set; } = default!;
 
@@ -22,8 +27,26 @@ public partial class EmployeesList
 
     private async Task OnInput(ChangeEventArgs e)
     {
-        SearchText = ((string? )e.Value) ?? string.Empty;
-        await LoadEmployees();
+
+        SearchText = ((string?)e.Value) ?? string.Empty;
+
+        //We nee to apply a 300 milisecons debounce
+        //in order to preven multiple unnecesary db calls
+        DisposeTimer();
+        _timer = new Timer(300);
+        _timer.Elapsed += TimerElapsed_TickAsync;
+        _timer.Enabled = true;
+        _timer.Start();
+    }
+
+    private async void TimerElapsed_TickAsync(object? sender, ElapsedEventArgs e)
+    {
+        DisposeTimer();
+        await InvokeAsync(async () =>
+        {
+            await LoadEmployees();
+            StateHasChanged();
+        });
     }
 
     private async Task OnOrderBySelected(ChangeEventArgs e)
@@ -44,9 +67,10 @@ public partial class EmployeesList
             4 => ("HireDate", false),
             5 => ("CreatedAt", true),
             6 => ("CreatedAt", false),
-            _ => ("Name", true)};
+            _ => ("Name", true)
+        };
         await LoadEmployees();
-    }   
+    }
 
     private async Task LoadEmployees()
     {
@@ -56,7 +80,14 @@ public partial class EmployeesList
 
     private async Task HandleDelete(int id)
     {
-      await EmployeeService.DeleteAsync(id);
-      await LoadEmployees();
+        await EmployeeService.DeleteAsync(id);
+        await LoadEmployees();
     }
+
+    private void DisposeTimer()
+    {
+        _timer?.Stop();
+        _timer?.Dispose();
+    }
+
 }
