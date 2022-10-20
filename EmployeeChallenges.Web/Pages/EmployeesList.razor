@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/employees"
 @using EmployeeChallenge.Application.Employees.Services
 @using EmployeeChallenge.Core.Models
 
@@ -22,18 +23,18 @@ else
             </div>
             <div>
                 <select class="form-control" @onchange="OnOrderBySelected">
+                    <option value="5">Created At Asc</option>
+                    <option value="6">Created At Desc</option>
                     <option value="1">Name Asc</option>
                     <option value="2">Name Desc</option>
                     <option value="3">Hire Date Asc</option>
-                    <option value="4">Hire Date Desc</option>
-                    <option value="5">Created At Asc</option>
-                    <option value="6">Created At Desc</option>
+                    <option value="4">Hire Date Desc</option>                  
                 </select>
                 <i class="oi oi-sort-ascending"></i>
             </div>
         </div>
 
-        <button class="btn btn-primary">Add Employee</button>
+        <a href="/employee" class="btn btn-primary">Add Employee</a>
     </div>
     @if (employees.Any())
     {
@@ -47,6 +48,7 @@ else
                     <th>Phone Number</th>
                     <th>Employee Zip</th>
                     <th>Created At</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +62,14 @@ else
                         <td>@employee.Phone.FormatPhoneNumber()</td>
                         <td>@employee.ZipCode</td>
                         <td>@employee.CreatedAt.ToString("MM/dd/yyyy hh:mm:ss")</td>
+                        <td>
+                            <a href="/employee/@employee.Id" class="btn btn-success">
+                                <i class="oi oi-pencil"></i>
+                            </a>
+                            <button @onclick="async () => await HandleDelete(employee.Id)" class="btn btn-danger">
+                                <i class="oi oi-trash"></i>
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>

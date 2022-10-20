@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddLocalization();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
@@ -30,6 +31,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseRequestLocalization(new RequestLocalizationOptions()
+    .AddSupportedCultures("en-Us")
+    .AddSupportedUICultures("en-US"));
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

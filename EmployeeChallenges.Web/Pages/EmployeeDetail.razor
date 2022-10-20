@@ -1,0 +1,61 @@
+﻿@page "/employee";
+@page "/employee/{employeeId:int}";
+
+
+
+<EditForm Model="@Model" OnValidSubmit="HandleFormSubmit">
+    <div class="container border p-3">
+        <DataAnnotationsValidator />
+        <h1 class="text-primary">@(!IsEditMode ? "Create" : "Edit") Employee</h1>       
+        <hr />
+
+        <div class="row">
+            <div class="col-2">
+                <label for="FirstName" class="control-label pt-2" style="font-size:20px;">First Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <InputText @bind-Value="Model.FirstName" class="form-control" />
+                <ValidationMessage For="() => Model.FirstName" class="text-danger" />
+            </div>
+            <div class="col-2">
+                <label for="LastName" class="control-label pt-2" style="font-size:20px;">Last Name</label>
+            </div>
+            <div class="col-10 pb-3">
+                <InputText @bind-Value="Model.LastName" class="form-control" />
+                <ValidationMessage For="() => Model.LastName" class="text-danger" />
+            </div>
+            <div class="col-2">
+                <label for="HireDate" class="control-label pt-2" style="font-size:20px;">Hire Date</label>
+            </div>
+            <div class="col-10 pb-3">
+                <InputDate @bind-Value="Model.HireDate" class="form-control" />
+                <ValidationMessage For="() => Model.HireDate" class="text-danger" />
+            </div>
+            <div class="col-2">
+                <label for="ZipCode" class="control-label pt-2" style="font-size:20px;">Zip Code</label>
+            </div>
+            <div class="col-10 pb-3">
+                <InputText @bind-Value="Model.ZipCode" class="form-control" />
+                <ValidationMessage For="() => Model.ZipCode" class="text-danger" />
+            </div>
+            <div class="col-2">
+                <label for="Phone" class="control-label pt-2" style="font-size:20px;">Phone Number</label>
+            </div>
+            <div class="col-10 pb-3">
+                <InputText @bind-Value="Model.Phone" class="form-control" />
+                <ValidationMessage For="() => Model.Phone" class="text-danger" />
+            </div>
+            <div class="col-5 offset-2">
+                <a href="/" class="btn-primary btn form-control">Back to List</a>
+            </div>
+            <div class="col-5">
+                <button type="submit" class="btn btn-info form-control">@(!IsEditMode ? "Create" : "Update")</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+
+
+

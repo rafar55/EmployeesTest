@@ -4,7 +4,7 @@ using EmployeeChallenge.Application.Employees.Services;
 
 namespace EmployeeChallenges.Web.Pages;
 
-public partial class EmployeesPage
+public partial class EmployeesList
 {
     [Inject]
     private IEmployeeService EmployeeService { get; set; } = default!;
@@ -12,7 +12,7 @@ public partial class EmployeesPage
     private Employee[] employees { get; set; } = Array.Empty<Employee>();
     private bool Loading { get; set; } = true;
     private string SearchText { get; set; } = string.Empty;
-    private (string SortColumn, bool ascending) SortConfiguration { get; set; } = ("Name", true);
+    private (string SortColumn, bool ascending) SortConfiguration { get; set; } = ("CreatedAt", false);
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,5 +52,11 @@ public partial class EmployeesPage
     {
         var data = await EmployeeService.GetEmployeesAsync(SearchText, SortConfiguration.SortColumn, SortConfiguration.ascending);
         employees = data.ToArray();
+    }
+
+    private async Task HandleDelete(int id)
+    {
+      await EmployeeService.DeleteAsync(id);
+      await LoadEmployees();
     }
 }
